@@ -1,0 +1,22 @@
+[
+  {
+    "id": "1a6d8d2b-278a-4ece-9271-627a4f115525",
+    "label": "hover"
+  },
+  {
+    "id": "b146d159-1d19-42cf-8686-f8d2e6ed22fa",
+    "label": "Jasc"
+  },
+  {
+    "id": "c73e7611-bfbb-45f8-8e93-48517cb1454c",
+    "label": "react"
+  },
+  {
+    "id": "1b576499-0de3-4df0-9acd-a79be475d00b", 
+    "label": "node"
+  },
+  {
+    "id": "c2f1b002-b26d-40f9-b03e-ec4fe68f4290", 
+    "label": "banana"
+  }
+]
