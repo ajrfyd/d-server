@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv").config();
 const tagRoute = require("./routes/tags");
+const postRoute = require("./routes/posts");
 
 const app = express();
 const { PORT } = process.env;
@@ -14,12 +15,20 @@ app.use(cors({
   credentials: true,
 }));
 
+app.get("/", (req, res) => {
+  return res.send("<h1>Welcome!!</h1>")
+});
+
 tagRoute.forEach(({ method, path, handler }) => {
   app[method](`/tags${path}`, handler);
 });
 
-app.get("/", (req, res) => {
-  return res.send("<h1>Welcome!!</h1>")
+postRoute.forEach(({ method, path, handler }) => {
+  app[method](`/posts${path}`, handler);
+});
+
+app.get("/*", (_, res) => {
+  return res.send("<h2>Page Not Found!</h2>")
 });
 
 app.listen(PORT, () => {
