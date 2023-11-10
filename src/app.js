@@ -7,7 +7,12 @@ const app = express();
 const { PORT } = process.env;
 
 app.use(express.json());
-app.use(cors());
+
+app.use(cors({
+  origin: ["http://localhost:5173", "https://k-log3943.netlify.app"],
+  method: ["GET", "POST", "DELETE", "OPTIONS"],
+  credentials: true,
+}));
 
 tagRoute.forEach(({ method, path, handler }) => {
   app[method](`/tags${path}`, handler);
