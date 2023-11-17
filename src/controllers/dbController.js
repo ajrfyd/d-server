@@ -21,10 +21,11 @@ module.exports = {
   },
   getPostsData: () => {
     const posts = getData("posts");
-    const tags = getData("tags");
-    // console.log(posts);
-    // console.log(tags);
     return posts;
+  },
+  getTagsData: () => {
+    const tags = getData("tags");
+    return tags;
   },
   writePost: (post) => {
     const savedTags = getData("tags");

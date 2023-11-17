@@ -1,4 +1,4 @@
-const { writePost, getPostsData } = require("../controllers/dbController.js");
+const { writePost, getPostsData, getTagsData } = require("../controllers/dbController.js");
 
 const postRoute = [
   {
@@ -7,8 +7,11 @@ const postRoute = [
     handler: async (req, res) => {
       try {
         const data = await getPostsData("posts");
-        console.log(data);
-        return res.json(data);
+        const tags = await getTagsData("tags");
+        return res.json({
+          posts: data,
+          tags
+        });
       } catch(e) {
         console.log(e);
       }
