@@ -24,11 +24,13 @@ const oauthRoute = [
             Authorization: `Bearer ${data.access_token}`
           }
         });
-
+        console.log(data.data);
+        console.log(userInfo);
         return res.json({
           userId: userInfo.login,
         });
       } catch(e) {
+        console.log(e);
         return res.json({
           status: 500,
           message: e.message
