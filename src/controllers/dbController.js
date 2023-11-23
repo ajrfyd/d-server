@@ -1,6 +1,6 @@
 const fs = require("fs");
 const { resolve } = require("path");
-const { go, map, filter, each, find, pipe  } = require("fxjs");
+const { go, map, filter, each, find, pipe, some  } = require("fxjs");
 
 const basePath = resolve();
 const filename = {
@@ -22,6 +22,19 @@ module.exports = {
   getPostsData: () => {
     const posts = getData("posts");
     return posts;
+  },
+  getPostById: (id) => {
+    const posts = getData("posts");
+    return go(posts, filter(post => post.id === id), ([a]) => a);
+  },
+  getPostsByTagId: (id) => {
+    const posts = getData("posts");
+    // return go(posts, filter(post => post.tags.some(tag => tag.id === id)));
+    return go(posts, filter(post => some(tag => tag.id === id, post.tags)));
+  },
+  getPostsByTitle: (title) => {
+    const posts = getData("posts");
+    return go(posts, filter(post => post.title.toLowerCase().includes(title.toLowerCase())));
   },
   getTagsData: () => {
     const tags = getData("tags");

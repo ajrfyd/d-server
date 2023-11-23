@@ -1,4 +1,11 @@
-const { writePost, getPostsData, getTagsData } = require("../controllers/dbController.js");
+const { 
+  writePost, 
+  getPostsData, 
+  getTagsData, 
+  getPostById, 
+  getPostsByTagId,
+  getPostsByTitle
+} = require("../controllers/dbController.js");
 
 const postRoute = [
   {
@@ -28,6 +35,44 @@ const postRoute = [
       } catch(e) {
         return res.json({ status: 500, message: e.message });
       }
+    }
+  },
+  {
+    method: "get",
+    path: "/:id",
+    handler: async (req, res) => {
+      const post = await getPostById(req.params.id);
+      console.log(post);
+      return res.json({
+        post,
+        status: !post ? 400 : 200,
+        message: !post ? "Not Found" : "success"
+      });
+    }
+  },
+  {
+    method: "get",
+    path: "/tag/:id",
+    handler: async (req, res) => {
+      const posts = await getPostsByTagId(req.params.id);
+      console.log(posts);
+      return res.json({
+        posts,
+        status: !posts ? 400 : 200,
+        message: !posts ? "Not Found" : "success"
+      });
+    }
+  },
+  {
+    method: "get",
+    path: "/title/:title",
+    handler: async (req, res) => {
+      const posts = await getPostsByTitle(req.params.title);
+      return res.json({
+        posts,
+        status: !posts ? 400 : 200,
+        message: !posts ? "Not Found" : "success"
+      });
     }
   }
 ]
