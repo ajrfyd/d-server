@@ -57,7 +57,7 @@ module.exports = {
     const { id } = newPost;
     const savedPosts = getData("posts");
     const savedTags = getData("tags");
-
+    console.log(newPost, "New Post !!!!");
     //! 새로운 태그를 걸러 낸다
     const newTags = go(newPost.tags, filter(tag => !savedTags.find(savedTag => savedTag.id === tag.id)));
     //! post와 새로운 태그를 저장한다.
