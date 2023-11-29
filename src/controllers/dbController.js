@@ -50,7 +50,22 @@ module.exports = {
       console.log("this!")
       setData("tags", [...newTags, ...savedTags]);
     }
-    console.log(newPost)
+
     setData("posts", [newPost, ...savedPosts]);
+  },
+  updatePost: (newPost) => {
+    const { id } = newPost;
+    const savedPosts = getData("posts");
+    const savedTags = getData("tags");
+
+    //! 새로운 태그를 걸러 낸다
+    const newTags = go(newPost.tags, filter(tag => !savedTags.find(savedTag => savedTag.id === tag.id)));
+    //! post와 새로운 태그를 저장한다.
+    if(newTags.length) {
+      setData("tags", [...newTags, ...savedTags]);
+    };
+
+    setData("posts", [...savedPosts.map(post => post.id === id ? ({...post, ...newPost }) : post)]);
+    return newPost; 
   }
 }

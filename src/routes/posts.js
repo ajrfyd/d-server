@@ -4,7 +4,8 @@ const {
   getTagsData, 
   getPostById, 
   getPostsByTagId,
-  getPostsByTitle
+  getPostsByTitle,
+  updatePost
 } = require("../controllers/dbController.js");
 
 const postRoute = [
@@ -21,19 +22,6 @@ const postRoute = [
         });
       } catch(e) {
         console.log(e);
-      }
-    }
-  },
-  {
-    method: "post",
-    path: "/write",
-    handler: (req, res) => {
-      const { body } = req;
-      try {
-        writePost(body);
-        return res.json({ status: 200, message: "success"});
-      } catch(e) {
-        return res.json({ status: 500, message: e.message });
       }
     }
   },
@@ -55,7 +43,7 @@ const postRoute = [
     path: "/tag/:id",
     handler: async (req, res) => {
       const posts = await getPostsByTagId(req.params.id);
-      console.log(posts);
+
       return res.json({
         posts,
         status: !posts ? 400 : 200,
@@ -73,6 +61,35 @@ const postRoute = [
         status: !posts ? 400 : 200,
         message: !posts ? "Not Found" : "success"
       });
+    }
+  },
+  {
+    method: "post",
+    path: "/write",
+    handler: (req, res) => {
+      const { body } = req;
+
+      try {
+        writePost(body);
+        return res.json({ status: 200, message: "success" });
+      } catch(e) {
+        return res.json({ status: 500, message: e.message });
+      }
+    }
+  },
+  {
+    method: "post",
+    path: "/update",
+    handler: (req, res) => {
+      const { data } = req.body;
+      try {
+        updatePost(data);
+        res.json({ status: 200, message: "success" });
+      } catch(e) {
+        console.log(e);
+        res.json({ status: 500, message: e.message });
+      }
+
     }
   }
 ]
