@@ -30,7 +30,6 @@ const postRoute = [
     path: "/:id",
     handler: async (req, res) => {
       const post = await getPostById(req.params.id);
-      console.log(post);
       return res.json({
         post,
         status: !post ? 400 : 200,
