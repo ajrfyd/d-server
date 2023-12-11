@@ -1,5 +1,17 @@
 [
-  
+  {
+    "title": "React-Select onChange option(isMulti)",
+    "body": "# React select\n\n### React-select isMulti onChange 옵션에 대하여...\n\n발단은 onChange옵션으로 들어오는 타입이 정확함에도\n\n> property label does not exist on type MultiValue<>...\n\n라는 오류가 계속 발생 하였다.\n\nIDE에 타입 유추로 들어오는 개별 타입도 정확한데 오류가 계속 발생함.\n\n구글링과 래퍼런스가 없어서 고민을 하다 문뜻 떠오른 생각에 해결 하였다, \n\n```js\nargs: MultiValue<{ label: string; value: string}>\n```\n\n위에 MultiValue<{}>가 해결의 열쇠가 되었다. \n\n그렇다 들어오는 값은 개별 객체가 아닌 배열 이었던 것이다....\n\nMultiValue라는 단어에 알아 차렸어야 했는데....\n\n계속 배열에 속한 객체의 개별 속성에 접근해 오류를 뿜었는데...\n\n차라리 타입[] 형식으로 알려 줬다면 알았을 것을...\n\n탓해 뭐하니...이제라도 알아 다행...\n",
+    "id": "e7369275-5235-4665-91bd-b3bc65277557",
+    "tags": [
+      { "id": "ee068a59-07de-41d9-b06a-469656e80a87", "label": "option" },
+      { "id": "c73e7611-bfbb-45f8-8e93-48517cb1454c", "label": "react" },
+      { "id": "07ae7be8-90f7-4d6a-a645-00f829c8ba4a", "label": "library" },
+      { "id": "1705b879-790a-4ff8-9f96-c10a0d00e703", "label": "select" },
+      { "id": "1a6d8d2b-278a-4ece-9271-627a4f115525", "label": "typescript" }
+    ],
+    "createdAt": "2023-12-11T06:27:36.636Z"
+  },
   {
     "title": "clientWidth & offsetWidth & scrollWidth",
     "body": "# 너비에 대하여...\n\n블로그 페이지를 수정하며 태그에 대한 슬라이드 기능을 개발하며\n\n궁금증이 생겼다. \n\n사용할 때 마다 까먹어 이번 기회에 짧게나마 정리를 해 두려도 한다.\n\n### clientWidth\n>  clientWidth란?\n>\n> 쉽게 target box의 내부 길이라고 보면 좋을것 같다.\n>\n> border를 포함하지 않은 너비 \n>\n> contents + padding \n\n### offsetWidth\n> offsetWidth란?\n>\n> 쉽게 target box의 내외부 길이라고 보면 좋을 겉 같다.\n>\n> border를 포함한 너비\n>\n> contents + padding + border\n\n### scrollWidth\n> scrollWidth란?\n> \n> 쉽게 스크롤 할 수 있는 영역 까지의 총 너비\n>\n> 부모 박스 overflow: hidden으로 숨겨진 자식 박스의 총 너비\n\n[참조](https://jsfiddle.net/y8Y32/25/)\n\n\n\n\n\n\n\n",
