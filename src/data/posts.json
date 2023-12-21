@@ -1,5 +1,28 @@
 [
   {
+    "title": "우분투 웹서버 만들기 1",
+    "body": "# 우분투 웹서버 만들기 1\n\n남는 컴퓨터를 활용해 개인 서버를 만들고 싶어 시작.\n\n집에 남는 컴퓨터를 활용해 외부에서 접속할 수 있는 서버를 만들고 싶은 분들\n\n참고: 공인ip(isp) => 벽장(H614G) 사설 ip 배분 >> sk 공유기 >> 사설 ip 분배\n\n이런 구조이고 서버를 만든 데스크탑은 벽에서 나온 랜선에 연결되어 있음.\n\n공인 ip - 사설ip(벽) - 사설ip(벽) - 사설ip(데스크탑 웹서버) - 사설 ip(벽)  - 사설ip(벽 > 랜 sk 공유기 wifi, iptv...)\n\n사설ip(벽 > 랜 sk 공유기)\n    ㄴ사설ip(macbook wifi)  - 기타 사설ip(와파이)\n\n쉽게 이해 될 수 있도록 사진은 나중에 서버 세팅 후 첨부할 수 있도록 할 예정.\n\n### 1. 우분투 설치\n우분투 서버를 설치 하고 싶었으나, 설치 과정에 문제가 있고 시간이 오래 걸릴것 같아 데스크탑으로 설치 하였음.(20.0.4)\n\n윈도우 환경에서 우분투 데스크탑 듀얼부팅 등 검색하면 많은 자료를 찾을 수 있기에 생략하겠음.\n<a href=\"https://palpit.tistory.com/entry/Ubuntu-%EC%9C%88%EB%8F%84%EC%9A%B0-10%EC%97%90%EC%84%9C-%EC%9A%B0%EB%B6%84%ED%88%AC-%EB%93%80%EC%96%BC%EB%B6%80%ED%8C%85-%ED%95%98%EA%B8%B0%EB%A9%80%ED%8B%B0%EB%B6%80%ED%8C%85-1\" target=\"_blank\">참고</a>\n\n### 2. 한글 설정(20.0.4)\n우분투 설치시 한글 설정 한 분은 패스.\n\n#### 1. Settings > Regions & Language > Input Sources 밑의 + 버튼 클릭\n#### 2. Korean 선택 후 add\n#### 3. 추가 후 English 삭제 후 밑의 Manage installed Languages 버튼 클릭해 설치\n#### 4. 터미널에 reboot 명령어로 다시시작(로그오프만 해도 된다고 함)\n#### 5. 다시 Settings > Regions & Language > Input Sources 밑 + 버튼 클릭\n#### 6. Korean(Hangul)선택 후 add\n#### 7. 기존의 Korean 삭제\n#### 8. 키 매핑<a href=\"https://shanepark.tistory.com/231\" target=\"_blank\"> [참조]</a>\n\n### 3.  ssh\n서버로 원격 접속해 작업 할 수 있도록 ssh 설정\n\n```bash\n$ sudo apt-get update\n\n# openssh-server 설치\n$ sudo apt-get install openssh-server\n    설치 할래? y\n\n# net-tools 설치\n$ sudo apt-get install net-tools\n$ ifconfig\n- en0 또는 비슷한 키를 가진곳에 \n- inet 뒷부분에 사설ip주소 나옴(192.168.ㅇㅇ, ㅇㅇ , 127.0.0.1 아님 주의!)\n- ether 뒷 부분은 기기 mac addr(그렇다고요...)\n\n# vim 설치\n$ sudo apt-get install vim\n\n# ssh 접속 port 설정\n$ sudo vim /etc/ssh/sshd_config\n- Port 22 << 모든 ssh기본 포트는 22이기 때문에 보안을 위해 나만의 port 번호로 수정\n- 다른 사람이 접속할 수 없도록(바꿔도 완벽한건 아님)\n# 변경한 설정 적용\n$ sudo systemctl restart sshd\n\n# 원격 접속\n$ ssh (우분투 설치시 입력한 사용자아이디)@192.168.ㅇㅇ.ㅇㅇ -p (위에서 설정한 포트 번호)\n- 우분투 설치시 설정한 비밀번호 입력\n```\n\n다음번에는 nginx 설치 후 본격적으로 서버를 연결해 봅시다.",
+    "id": "c38d9441-bdc1-44ad-ae00-772b09c30c85",
+    "tags": [
+      { "id": "e35b88d8-9861-4793-a831-eddb950f5f27", "label": "ssh" },
+      { "id": "8b5443e2-fea2-4f2d-8e04-c85489a4be5c", "label": "ubuntu" },
+      { "id": "c544c57a-6c11-42ba-8d43-9773f9952fbd", "label": "webserver" }
+    ],
+    "createdAt": "2023-12-18T07:22:49.268Z"
+  },
+  {
+    "title": "Web Server vs WAS",
+    "body": "# Web Server vs WAS\n\n### Web Server\n> client web으로 부터 http 요청을 받아들이고\n> html 같은 웹페이지를 반환하는 프로그램\n>\n> ex) Aphache, Nginx...\n>\n> ### 역할\n> 보통 client와 WAS 사이에 위치함.\n> client에 정적 파일을 제공(html, image, css, js ...)\n> client로 부터 들어온 동적 요청을 WAS로 전달.\n> WAS에서 처리한 부분을 다시 client에 전달.\n\n### WAS(Web Application Server)\n> WAS는 동적 서버 콘텐츠를 수행하는 것으로 일반적인 웹 서버와 구별이 되며,\n> 주로 데이터베이스 서버와 같이 수행이 된다.\n> 웹서버와 웹컨테이너가 합쳐진 형태,\n>\n> 웹컨테이너: 웹서버에서 요청한 파일들의 수행 결과물을 다시 웹서버로 보내줌.\n>\n> ex) Tomcat, Jboss...\n> \n> ### 역할\n> 다양한 비지니스 로직의 처리가 가능하기 때문에 DB와 연동해\n> 동적 컨텐츠를 제공할 수 있다.\n> 단순한 정적 컨텐츠도 제공 가능함.\n>   \n\n\nWAS는 웹서버의 기능까지 할 수 있는데 왜??\n- WAS는 DB조회, 각종 비지니스 로직 처리 등에 집중 하는게 좋다.\n- WAS가 정적 컨텐츠 요청까지 처리 하면 효율성이 떨어짐.(동적 컨텐츠 처리 지연)\n\n* 단순한 정적 컨텐츠 제공은 웹서버에 기능 분리시켜 서버 부하를 방지한다.\n\n\n<a href=\"https://story.pxd.co.kr/1647\" target=\"_blank\">[참고]</a>",
+    "id": "8f9ddf54-3a16-4a4c-9638-c2473ee1c496",
+    "tags": [
+      { "id": "4296b72f-ac63-4763-b598-0874a909e81e", "label": "network" },
+      { "id": "4ce4411b-a18d-4657-ae5e-da6990af19b6", "label": "was" },
+      { "id": "c544c57a-6c11-42ba-8d43-9773f9952fbd", "label": "webserver" },
+      { "id": "7afd464b-e9ac-431e-b445-3d4da7c9820f", "label": "nodejs" }
+    ],
+    "createdAt": "2023-12-14T03:24:16.977Z"
+  },
+  {
     "title": "React-Select onChange option(isMulti)",
     "body": "# React select\n\n### React-select isMulti onChange 옵션에 대하여...\n\n발단은 onChange옵션으로 들어오는 타입이 정확함에도\n\n> property label does not exist on type MultiValue<>...\n\n라는 오류가 계속 발생 하였다.\n\nIDE에 타입 유추로 들어오는 개별 타입도 정확한데 오류가 계속 발생함.\n\n구글링과 래퍼런스가 없어서 고민을 하다 문뜻 떠오른 생각에 해결 하였다, \n\n```js\nargs: MultiValue<{ label: string; value: string}>\n```\n\n위에 MultiValue<{}>가 해결의 열쇠가 되었다. \n\n그렇다 들어오는 값은 개별 객체가 아닌 배열 이었던 것이다....\n\nMultiValue라는 단어에 알아 차렸어야 했는데....\n\n계속 배열에 속한 객체의 개별 속성에 접근해 오류를 뿜었는데...\n\n차라리 타입[] 형식으로 알려 줬다면 알았을 것을...\n\n탓해 뭐하니...이제라도 알아 다행...\n",
     "id": "e7369275-5235-4665-91bd-b3bc65277557",
@@ -14,7 +37,7 @@
   },
   {
     "title": "clientWidth & offsetWidth & scrollWidth",
-    "body": "# 너비에 대하여...\n\n블로그 페이지를 수정하며 태그에 대한 슬라이드 기능을 개발하며\n\n궁금증이 생겼다. \n\n사용할 때 마다 까먹어 이번 기회에 짧게나마 정리를 해 두려도 한다.\n\n### clientWidth\n>  clientWidth란?\n>\n> 쉽게 target box의 내부 길이라고 보면 좋을것 같다.\n>\n> border를 포함하지 않은 너비 \n>\n> contents + padding \n\n### offsetWidth\n> offsetWidth란?\n>\n> 쉽게 target box의 내외부 길이라고 보면 좋을 겉 같다.\n>\n> border를 포함한 너비\n>\n> contents + padding + border\n\n### scrollWidth\n> scrollWidth란?\n> \n> 쉽게 스크롤 할 수 있는 영역 까지의 총 너비\n>\n> 부모 박스 overflow: hidden으로 숨겨진 자식 박스의 총 너비\n\n[참조](https://jsfiddle.net/y8Y32/25/)\n\n\n\n\n\n\n\n",
+    "body": "# 너비에 대하여...\n\n블로그 페이지를 수정하며 태그에 대한 슬라이드 기능을 개발하며\n\n궁금증이 생겼다. \n\n사용할 때 마다 까먹어 이번 기회에 짧게나마 정리를 해 두려도 한다.\n\n### clientWidth\n>  clientWidth란?\n>\n> 쉽게 target box의 내부 길이라고 보면 좋을것 같다.\n>\n> border를 포함하지 않은 너비 \n>\n> contents + padding \n\n### offsetWidth\n> offsetWidth란?\n>\n> 쉽게 target box의 내외부 길이라고 보면 좋을 겉 같다.\n>\n> border를 포함한 너비\n>\n> contents + padding + border\n\n### scrollWidth\n> scrollWidth란?\n> \n> 쉽게 스크롤 할 수 있는 영역 까지의 총 너비\n>\n> 부모 박스 overflow: hidden으로 숨겨진 자식 박스의 총 너비\n\n<a href=\"https://jsfiddle.net/y8Y32/25/\" target=\"_blank\">[참조]</a>\n\n",
     "tags": [],
     "id": "a6cda2cc-51c0-40e1-8825-a65666ab2e33",
     "createdAt": "2023-12-09T02:13:27.411Z"
@@ -86,6 +109,6 @@
       { "label": "nodejs", "id": "7afd464b-e9ac-431e-b445-3d4da7c9820f" }
     ],
     "id": "b03444bf-75ab-4da0-9da4-de585ebf28e1",
-    "createdAt": "2023-11-14T15:41:33.387Z"
+    "createdAt": "2023-05-21T15:41:33.387Z"
   }
 ]
